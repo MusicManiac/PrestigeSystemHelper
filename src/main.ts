@@ -95,10 +95,15 @@ const modifiedData = weaponMastery.map((weapon: { Id?: any; Progress: any;}) => 
 	let partialExpSavedUp = savedData.Mastering.find((item: any) => item.Id === Id)?.["Partial exp saved up"] || 0;
 	let masteryLevelThreeExpThreshold = masteryExpTable[Id];
 	const expOverflow = Progress - masteryLevelThreeExpThreshold;
-	let prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * (1 + expIncrease * timesPrestiged));
+	let prestigeThreshold = 0;
+	
+	if (config.expIncreaseIsLinear) {
+		prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * (1 + expIncrease * timesPrestiged));
+	} else {
+		prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * Math.pow(1 + expIncrease, timesCanPrestige));
+	}
 
 	if (Progress > masteryLevelThreeExpThreshold) {
-		
 		partialExpSavedUp += expOverflow;
 		const index = saveFile.characters.pmc.Skills.Mastering.findIndex((item: { Id?: any; Progress: any; }) => item.Id === Id);
 		if (index !== -1) {
