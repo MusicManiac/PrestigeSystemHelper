@@ -1,40 +1,13 @@
 {
-	"id": "insertYourProfileIdHere",
+	"id": "252a824d39eb9dd7aa161fca",
 
 	"masteryExpIncrease": 0.05,
 	"masteryExpIncreaseDescription": "After mastering weapon once, next time you would prestige it is would require masteryExpIncrease % more hits (from base) more. 0.05 = 5%. Example: Mastery lvl 3 on M4 requires 3600 exp. With masteryExpIncrease set to 0.05, 2nd prestige would be unlocked at 3780 (3600 * 1.05). The one after would be at 3960 (3600 * 1.1), and so on. It's linear growth, not exponential",
 
-	"masteryExp": {
-		"M4": 3600,
-		"MP5": 450,
-		"MP153": 3700,
-		"VPO101": 225,
-		"SAIGA": 525,
-		"MCX": 350,
-		"VSS": 775,
-		"MPX": 350,
-		"M1A": 675,
-		"P226": 175,
-		"AKM": 1100,
-		"SR2": 550,
-		"MDR": 1050,
-		"AK74": 4200,
-		"57": 350,
-		"AXMC": 350,
-		"MP9": 325,
-		"Mk17": 850,
-		"UMP45": 875,
-		"ASH12": 575,
-		"SA-58": 475,
-		"STM-9": 450,
-		"mp7": 1350,
-		"SVD": 550,
-		"G28": 350,
-		"MK47": 1900,
-		"USP": 175,
-		"r700": 350,
-		"VECTOR": 750,
-		"GLOCK17": 225
-	}
+	"masteryExpOverride": {
+		"STM-9": 450
+	},
+
+	"note" : "STM requires only 250 originally, change it if you're not running full auto STM"
 }
 	
