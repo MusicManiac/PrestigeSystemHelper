@@ -1,100 +1,140 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_1 = require("fs");
-var path_1 = require("path");
-var configPath = "../config/config.json";
-var savedDataPath = "../config/savedData.json";
-var config = {};
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const configPath = "./config/config.json";
+const savedDataPath = "./config/savedData.json";
+const globalsDataPath = "../../../Aki_Data/Server/database/globals.json";
+let config = {};
 // Check if JSON file exists
 if (fs_1.default.existsSync(savedDataPath)) {
     try {
-        var jsonData = fs_1.default.readFileSync(configPath, "utf-8");
+        const jsonData = fs_1.default.readFileSync(configPath, "utf-8");
         config = JSON.parse(jsonData);
-        console.info("[Prestige System Helper] Read existing config JSON file", config);
+        console.info("[Info] Read existing mod config JSON file");
     }
     catch (error) {
-        console.error("[Prestige System Helper] Error reading config JSON file:", error);
+        console.error("[Info] Error reading mod config JSON file:", error);
     }
 }
 else {
-    console.info("[Prestige System Helper] No existing config JSON file found.");
+    console.info("[Info] No existing mod config JSON file found.");
 }
-var saveFilePath = "../../../profiles/" + config.id + ".json";
-var savedData = {};
+const saveFilePath = "../../profiles/" + config.id + ".json";
+let savedData = {};
 // Check if JSON file exists
 if (fs_1.default.existsSync(savedDataPath)) {
     try {
-        var jsonData = fs_1.default.readFileSync(savedDataPath, "utf-8");
+        const jsonData = fs_1.default.readFileSync(savedDataPath, "utf-8");
         savedData = JSON.parse(jsonData);
-        console.info("[Prestige System Helper] Read existing JSON file", savedData);
+        console.info("[Info] Read existing mod saved data JSON file");
     }
     catch (error) {
-        console.error("[Prestige System Helper] Error reading JSON file:", error);
+        console.error("[Info] Error reading mod saved data JSON file:", error);
     }
 }
 else {
-    console.info("[Prestige System Helper] No existing JSON file found. Creating a new one.");
+    console.info("[Info] No existing mod saved data JSON file found. Creating a new one.");
     // Create the directory if it doesn't exist
-    var directory = path_1.default.dirname(savedDataPath);
+    const directory = path_1.default.dirname(savedDataPath);
     if (!fs_1.default.existsSync(directory)) {
         fs_1.default.mkdirSync(directory, { recursive: true });
     }
 }
-var saveFile = {};
-if (fs_1.default.existsSync(saveFilePath)) {
+let globalsDatabase = {};
+// Check if JSON file exists
+if (fs_1.default.existsSync(globalsDataPath)) {
     try {
-        var jsonData = fs_1.default.readFileSync(saveFilePath, "utf-8");
-        saveFile = JSON.parse(jsonData);
-        console.info("[Prestige System Helper] Read existing save file", saveFile);
+        const jsonData = fs_1.default.readFileSync(globalsDataPath, "utf-8");
+        globalsDatabase = JSON.parse(jsonData);
+        console.info("[Info] Read existing globals database JSON file");
     }
     catch (error) {
-        console.error("[Prestige System Helper] Error reading save file:", error);
+        console.error("[Info] Error reading globals database JSON file:", error);
     }
 }
 else {
-    console.info("[Prestige System Helper] No existing save file found. Make sure save file exists in directory " + saveFilePath);
+    console.info("[Info] No existing globals database JSON file found at " + globalsDataPath);
 }
-var weaponMastery = saveFile.characters.pmc.Skills.Mastering;
-var expIncrease = config.masteryExpIncrease;
-var onlyInformWhenNoMasteryLoss = config.onlyShowWarningWhenNoMasteryLoss;
-//masteryData.characters.pmc.Skills.Mastering;
-var modifiedData = weaponMastery.map(function (weapon) {
-    var _a, _b, _c, _d;
-    var Id = weapon.Id, Progress = weapon.Progress;
-    var timesPrestiged = ((_a = savedData.Mastering.find(function (item) { return item.Id === Id; })) === null || _a === void 0 ? void 0 : _a["Times Prestiged"]) || 0;
-    var totalExpConsumed = ((_b = savedData.Mastering.find(function (item) { return item.Id === Id; })) === null || _b === void 0 ? void 0 : _b["Total Exp Consumed so far by Prestiging"]) || 0;
-    var timesCanPrestige = ((_c = savedData.Mastering.find(function (item) { return item.Id === Id; })) === null || _c === void 0 ? void 0 : _c["Times Can Prestige"]) || 0;
-    var partialExpSavedUp = ((_d = savedData.Mastering.find(function (item) { return item.Id === Id; })) === null || _d === void 0 ? void 0 : _d["Partial exp saved up"]) || 0;
-    var exp = config.masteryExp[Id];
-    var prestigeThreshold = Math.floor(exp * (1 + expIncrease * timesPrestiged) / 5) * 5;
-    if (Progress > 0) {
-        //partialExpSavedUp += Progress - exp;
-        //masteryData.characters.pmc.Skills.Mastering.Id.Progress -= Progress - exp;
-        var index = saveFile.characters.pmc.Skills.Mastering.findIndex(function (item) { return item.Id === Id; });
+let masteryExpTable = {};
+globalsDatabase.config.Mastering.forEach((item) => {
+    if (item.Name && item.Level2 && item.Level3) {
+        masteryExpTable[item.Name] = item.Level2 + item.Level3;
+    }
+    else {
+        console.error(`[Info] Missing required fields for item: ${JSON.stringify(item)}`);
+    }
+});
+console.info("[Info] Mastery table populated");
+Object.keys(config.masteryExpOverride).forEach((name) => {
+    if (masteryExpTable[name] !== undefined) {
+        masteryExpTable[name] = config.masteryExpOverride[name];
+        console.info("[Info] Exp for item " + name + " was overwritten.");
+    }
+});
+let saveFile = {};
+if (fs_1.default.existsSync(saveFilePath)) {
+    try {
+        const jsonData = fs_1.default.readFileSync(saveFilePath, "utf-8");
+        saveFile = JSON.parse(jsonData);
+        console.info("[Info] Read existing save file");
+    }
+    catch (error) {
+        console.error("[Info] Error reading save file:", error);
+    }
+}
+else {
+    console.info("[Info] No existing save file found. Make sure save file exists in directory " + saveFilePath);
+}
+const weaponMastery = saveFile.characters.pmc.Skills.Mastering;
+const expIncrease = config.masteryExpIncrease;
+const modifiedData = weaponMastery.map((weapon) => {
+    const { Id, Progress } = weapon;
+    const timesPrestiged = savedData.Mastering.find((item) => item.Id === Id)?.["Times Prestiged"] || 0;
+    let totalExpConsumed = savedData.Mastering.find((item) => item.Id === Id)?.["Total Exp Consumed so far by Prestiging"] || 0;
+    let timesCanPrestige = savedData.Mastering.find((item) => item.Id === Id)?.["Times Can Prestige"] || 0;
+    let partialExpSavedUp = savedData.Mastering.find((item) => item.Id === Id)?.["Partial exp saved up"] || 0;
+    let masteryLevelThreeExpThreshold = masteryExpTable[Id];
+    const expOverflow = Progress - masteryLevelThreeExpThreshold;
+    let prestigeThreshold = 0;
+    if (config.expIncreaseIsLinear) {
+        prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * (1 + expIncrease * timesPrestiged));
+    }
+    else {
+        prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * Math.pow(1 + expIncrease, timesCanPrestige));
+    }
+    if (Progress > masteryLevelThreeExpThreshold) {
+        partialExpSavedUp += expOverflow;
+        const index = saveFile.characters.pmc.Skills.Mastering.findIndex((item) => item.Id === Id);
         if (index !== -1) {
-            saveFile.characters.pmc.Skills.Mastering[index].Progress -= 1;
+            saveFile.characters.pmc.Skills.Mastering[index].Progress -= expOverflow;
         }
         else {
-            console.log("Id " + Id + " not found in the Mastering array");
+            console.log("[Info] Id " + Id + " not found in the Mastering array");
         }
+        console.log(`[Prestige] Moved ${expOverflow} exp from ${Id} to your exp buffer for it, you have now ${partialExpSavedUp}/${prestigeThreshold} exp saved up`);
     }
-    if (timesPrestiged == 0 && Progress >= prestigeThreshold) {
-        console.log("[Prestige System Helper] You can do initial prestige of ".concat(Id, " without losing mastery bonus or consuming any exp, since it's your first prestige in this weapon!"));
+    if (timesPrestiged == 0 && Progress >= prestigeThreshold && timesCanPrestige == timesPrestiged) {
+        console.log(`[Prestige] You can do initial prestige of ${Id} without losing mastery bonus or consuming any exp, since it's your first prestige in this weapon!`);
+        timesCanPrestige++;
     }
-    else if (Progress + partialExpSavedUp - prestigeThreshold >= exp && onlyInformWhenNoMasteryLoss) {
-        console.log("[Prestige System Helper] You can prestige ".concat(Id, " without losing mastery bonus! \n\tIt requires ").concat(prestigeThreshold, " exp to be consumed, you currently have ").concat(Progress, " exp (5100 is max) in weapon and ").concat(partialExpSavedUp, " exp set aside."));
+    else if (partialExpSavedUp >= prestigeThreshold && timesCanPrestige == timesPrestiged) {
+        timesCanPrestige++;
+        partialExpSavedUp -= prestigeThreshold;
+        totalExpConsumed += prestigeThreshold;
+        console.log(`[Prestige] You can prestige ${Id}! \n\tIt requires ${prestigeThreshold} exp to be consumed (which it just did), you currently have ${partialExpSavedUp} exp set aside left.\n\tNeeded exp has already been consumed from your overflow exp buffer\n\tAll you gotta do now is prestige your weapon (whatever it means to you) and in savedData.json increase 'Times Prestiged' counter by 1`);
     }
-    else if (Progress + partialExpSavedUp >= prestigeThreshold && !onlyInformWhenNoMasteryLoss) {
-        console.log("[Prestige System Helper] You can prestige ".concat(Id, "! \n\tIt requires ").concat(prestigeThreshold, " exp to be consumed, you currently have ").concat(Progress, " exp (5100 is max) in weapon and ").concat(partialExpSavedUp, " exp set aside. \n\tMastery 3 requires you to have at least ").concat(exp, " exp in weapon.\n\tYou can earn more exp and prestige later or you can move some exp by removing exp from mastery in your save file and increasing 'Partial exp consumed'"));
-    }
-    else if (Progress >= config.warningExpThreshold) {
-        console.log("[Prestige System Helper] You have ".concat(Progress, " exp in ").concat(Id, " which is close to maxing out at 5100!\n\tYou probably want to move some exp by removing exp from mastery in your save file and increasing 'Partial exp consumed'"));
+    else if (timesCanPrestige > timesPrestiged) {
+        console.log(`[Prestige] You forgot to prestige ${Id} last time you were doing this!`);
     }
     return {
-        Id: Id,
+        Id,
         "Current exp": weapon.Progress,
         "Exp to consume with this prestige": prestigeThreshold,
-        "Exp need to be left to have mastery 3": exp,
+        "Exp need to be left to have mastery 3": masteryLevelThreeExpThreshold,
         "Partial exp saved up": partialExpSavedUp,
         "Times Can Prestige": timesCanPrestige,
         "Times Prestiged": timesPrestiged,
@@ -102,43 +142,49 @@ var modifiedData = weaponMastery.map(function (weapon) {
     };
 });
 savedData.Mastering = modifiedData;
-fs_1.default.readFile(saveFilePath, 'utf-8', function (err, data) {
+fs_1.default.readFile(saveFilePath, 'utf-8', (err, data) => {
     if (err) {
-        console.error('Error reading JSON save file:', err);
+        console.error('[Info] Error reading JSON save file:', err);
         return;
     }
     try {
         // Parse the JSON data
-        var jsonObject = JSON.parse(data);
+        const jsonObject = JSON.parse(data);
         // Modify the specific array
         if (Array.isArray(jsonObject.characters.pmc.Skills.Mastering)) {
             // Update the array as needed
             jsonObject.characters.pmc.Skills.Mastering = saveFile.characters.pmc.Skills.Mastering;
             // Convert the modified object back to JSON
-            var updatedJson = JSON.stringify(jsonObject, null, '\t');
+            const updatedJson = JSON.stringify(jsonObject, null, '\t');
             // Write the updated JSON back to the file
-            fs_1.default.writeFile(saveFilePath, updatedJson, 'utf-8', function (err) {
+            fs_1.default.writeFile(saveFilePath, updatedJson, 'utf-8', (err) => {
                 if (err) {
-                    console.error('Error writing JSON save file:', err);
+                    console.error('[Info] Error writing JSON save file:', err);
                     return;
                 }
-                console.log('Mastery array in save file updated successfully.');
+                console.log('[Info] Mastery array in save file updated successfully.');
             });
         }
         else {
-            console.error('The specified field is not an array.');
+            console.error('[Info] The specified field is not an array.');
         }
     }
     catch (parseError) {
-        console.error('Error parsing save JSON:', parseError);
+        console.error('[Info] Error parsing save JSON:', parseError);
     }
 });
 // Write JSON file
 try {
-    var data = JSON.stringify(savedData, null, '\t');
+    const data = JSON.stringify(savedData, null, '\t');
     fs_1.default.writeFileSync(savedDataPath, data);
-    console.error("[Prestige System Helper] Saved info in JSON");
+    console.error("[Info] Saved info in JSON");
 }
 catch (error) {
-    console.error("[Prestige System Helper] Error writing JSON file:", error);
+    console.error("[Info] Error writing JSON file:", error);
 }
+setTimeout(() => {
+    console.log('[Info] You are free to close the window (press Enter or close manually) when not needed anymore.');
+}, 1000);
+process.stdin.resume();
+process.stdin.on("data", process.exit.bind(process, 0));
+//# sourceMappingURL=main.js.map

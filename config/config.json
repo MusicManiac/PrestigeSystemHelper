@@ -1,16 +1,10 @@
 {
-	"id": "252a824d39eb9dd7aa161fca",
+	"id": "d8b4749a6ac00e87fab1094e",
 
-	"masteryExpIncrease": 0.05,
+	"masteryExpIncrease": 0.1,
 	"masteryExpIncreaseDescription": "After mastering weapon once, next time you would prestige it is would require masteryExpIncrease % more hits (from base) more. 0.05 = 5%. Example: Mastery lvl 3 on M4 requires 3600 exp. With masteryExpIncrease set to 0.05, 2nd prestige would be unlocked at 3780 (3600 * 1.05). The one after would be at 3960 (3600 * 1.1), and so on. It's linear growth, not exponential",
 
 	"expIncreaseIsLinear" : false,
-	"expIncreaseIsLinearDescription" : "If this is set to false, instead of exp increase being linear it's exponential, aka based on last amount of exp you had to spend. With masteryExpIncrease set to 0.05, 2nd prestige would be unlocked at 3780 (3600 * 1.05). The one after would be at 3969 (3780 * 1.05), and so on. It's exponential growth, not linear",
-
-	"masteryExpOverride": {
-		"STM-9": 450
-	},
-
-	"note" : "STM requires only 250 originally, change it if you're not running full auto STM"
+	"expIncreaseIsLinearDescription" : "If this is set to false, instead of exp increase being linear it's exponential, aka based on last amount of exp you had to spend. With masteryExpIncrease set to 0.05, 2nd prestige would be unlocked at 3780 (3600 * 1.05). The one after would be at 3969 (3780 * 1.05), and so on. It's exponential growth, not linear"
 }
 	
