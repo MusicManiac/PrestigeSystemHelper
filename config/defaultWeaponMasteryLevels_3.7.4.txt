@@ -1,0 +1,347 @@
+"WeaponsExpLevels": [
+    {
+        "Level2": 1600,
+        "Level3": 2000,
+        "Name": "M4"
+    },
+    {
+        "Level2": 500,
+        "Level3": 600,
+        "Name": "AKM"
+    },
+    {
+        "Level2": 200,
+        "Level3": 300,
+        "Name": "SKS"
+    },
+    {
+        "Level2": 275,
+        "Level3": 350,
+        "Name": "AKSU"
+    },
+    {
+        "Level2": 2000,
+        "Level3": 2200,
+        "Name": "AK74"
+    },
+    {
+        "Level2": 275,
+        "Level3": 500,
+        "Name": "VSS"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "MP443"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "MP133"
+    },
+    {
+        "Level2": 1500,
+        "Level3": 2200,
+        "Name": "MP153"
+    },
+    {
+        "Level2": 150,
+        "Level3": 250,
+        "Name": "MR43"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "PM"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "PB"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "P226"
+    },
+    {
+        "Level2": 200,
+        "Level3": 250,
+        "Name": "MP5"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "TT"
+    },
+    {
+        "Level2": 300,
+        "Level3": 650,
+        "Name": "SAIGA"
+    },
+    {
+        "Level2": 175,
+        "Level3": 350,
+        "Name": "PP19"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "MPX"
+    },
+    {
+        "Level2": 175,
+        "Level3": 200,
+        "Name": "PP-91"
+    },
+    {
+        "Level2": 100,
+        "Level3": 175,
+        "Name": "SV98"
+    },
+    {
+        "Level2": 100,
+        "Level3": 175,
+        "Name": "DVL"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "TOZ106"
+    },
+    {
+        "Level2": 175,
+        "Level3": 300,
+        "Name": "R11SRASS"
+    },
+    {
+        "Level2": 100,
+        "Level3": 125,
+        "Name": "GLOCK17"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "APS"
+    },
+    {
+        "Level2": 275,
+        "Level3": 400,
+        "Name": "M1A"
+    },
+    {
+        "Level2": 100,
+        "Level3": 200,
+        "Name": "M870"
+    },
+    {
+        "Level2": 200,
+        "Level3": 250,
+        "Name": "mosin"
+    },
+    {
+        "Level2": 175,
+        "Level3": 300,
+        "Name": "SA-58"
+    },
+    {
+        "Level2": 75,
+        "Level3": 125,
+        "Name": "sr1mp"
+    },
+    {
+        "Level2": 550,
+        "Level3": 800,
+        "Name": "mp7"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "r700"
+    },
+    {
+        "Level2": 75,
+        "Level3": 150,
+        "Name": "VPO101"
+    },
+    {
+        "Level2": 250,
+        "Level3": 300,
+        "Name": "SVD"
+    },
+    {
+        "Level2": 450,
+        "Level3": 600,
+        "Name": "MDR"
+    },
+    {
+        "Level2": 175,
+        "Level3": 400,
+        "Name": "ASH12"
+    },
+    {
+        "Level2": 200,
+        "Level3": 350,
+        "Name": "P90"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "m9"
+    },
+    {
+        "Level2": 200,
+        "Level3": 350,
+        "Name": "KS23"
+    },
+    {
+        "Level2": 125,
+        "Level3": 225,
+        "Name": "57"
+    },
+    {
+        "Level2": 150,
+        "Level3": 175,
+        "Name": "MP9"
+    },
+    {
+        "Level2": 125,
+        "Level3": 250,
+        "Name": "VPO_215"
+    },
+    {
+        "Level2": 75,
+        "Level3": 125,
+        "Name": "T5000"
+    },
+    {
+        "Level2": 350,
+        "Level3": 500,
+        "Name": "SR25"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "m1911"
+    },
+    {
+        "Level2": 175,
+        "Level3": 200,
+        "Name": "PPSH"
+    },
+    {
+        "Level2": 250,
+        "Level3": 400,
+        "Name": "RFB"
+    },
+    {
+        "Level2": 375,
+        "Level3": 500,
+        "Name": "UMP45"
+    },
+    {
+        "Level2": 100,
+        "Level3": 200,
+        "Name": "M590"
+    },
+    {
+        "Level2": 100,
+        "Level3": 200,
+        "Name": "Mk18"
+    },
+    {
+        "Level2": 300,
+        "Level3": 450,
+        "Name": "VECTOR"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "MCX"
+    },
+    {
+        "Level2": 100,
+        "Level3": 150,
+        "Name": "STM-9"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "PL15"
+    },
+    {
+        "Level2": 600,
+        "Level3": 1300,
+        "Name": "MK47"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "G28"
+    },
+    {
+        "Level2": 350,
+        "Level3": 500,
+        "Name": "Mk17"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "USP"
+    },
+    {
+        "Level2": 75,
+        "Level3": 150,
+        "Name": "MTS"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "RHINO"
+    },
+    {
+        "Level2": 200,
+        "Level3": 250,
+        "Name": "G36"
+    },
+    {
+        "Level2": 350,
+        "Level3": 450,
+        "Name": "M3S90"
+    },
+    {
+        "Level2": 75,
+        "Level3": 100,
+        "Name": "MP-18"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "AXMC"
+    },
+    {
+        "Level2": 200,
+        "Level3": 350,
+        "Name": "SR2"
+    },
+    {
+        "Level2": 350,
+        "Level3": 500,
+        "Name": "AUG"
+    },
+    {
+        "Level2": 100,
+        "Level3": 125,
+        "Name": "RSH12"
+    },
+    {
+        "Level2": 150,
+        "Level3": 200,
+        "Name": "PKM"
+    },
+    {
+        "Level2": 200,
+        "Level3": 250,
+        "Name": "SVT-40"
+    }
+]

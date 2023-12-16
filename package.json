@@ -1,8 +1,9 @@
 {
   "name": "MusicManiac-PrestigeSystemHelper",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/weaponLevelsAdjuster.js",
+  "akiVersion": "3.7.x",
   "scripts": {
     "build": "tsc",
     "package": "pkg -t node16-win-x64 -o Prestige.exe .\\dist\\main.js",
