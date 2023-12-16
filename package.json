@@ -1,6 +1,6 @@
 {
   "name": "MusicManiac-PrestigeSystemHelper",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "",
   "main": "src/weaponLevelsAdjuster.js",
   "akiVersion": "3.7.x",
