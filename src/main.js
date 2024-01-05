@@ -7,10 +7,11 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const configPath = "./config/config.json";
 const savedDataPath = "./config/savedData.json";
+const weaponLevelsAdjusterConfigPath = "./config/weaponLevelsAdjusterConfig.json";
 const globalsDataPath = "../../../Aki_Data/Server/database/globals.json";
 let config = {};
 // Check if JSON file exists
-if (fs_1.default.existsSync(savedDataPath)) {
+if (fs_1.default.existsSync(configPath)) {
     try {
         const jsonData = fs_1.default.readFileSync(configPath, "utf-8");
         config = JSON.parse(jsonData);
@@ -22,6 +23,21 @@ if (fs_1.default.existsSync(savedDataPath)) {
 }
 else {
     console.info("[Info] No existing mod config JSON file found.");
+}
+let weaponLevelsAdjusterConfig = {};
+// Check if JSON file exists
+if (fs_1.default.existsSync(savedDataPath)) {
+    try {
+        const jsonData = fs_1.default.readFileSync(weaponLevelsAdjusterConfigPath, "utf-8");
+        weaponLevelsAdjusterConfig = JSON.parse(jsonData);
+        console.info("[Info] Read existing weaponLevelsAdjusterConfig JSON file");
+    }
+    catch (error) {
+        console.error("[Info] Error reading weaponLevelsAdjusterConfig JSON file:", error);
+    }
+}
+else {
+    console.info("[Info] No existing weaponLevelsAdjusterConfig JSON file found.");
 }
 const saveFilePath = "../../profiles/" + config.id + ".json";
 let savedData = {};
@@ -62,19 +78,27 @@ else {
 let masteryExpTable = {};
 globalsDatabase.config.Mastering.forEach((item) => {
     if (item.Name && item.Level2 && item.Level3) {
-        masteryExpTable[item.Name] = item.Level2 + item.Level3;
+        if (weaponLevelsAdjusterConfig.overrideDefaultExp) {
+            // Find the adjusted item in weaponLevelsAdjusterConfig by matching the Name
+            const adjustedItem = weaponLevelsAdjusterConfig.WeaponsExpLevels.find((adjustedWeapon) => adjustedWeapon.Name === item.Name);
+            if (adjustedItem) {
+                masteryExpTable[item.Name] = adjustedItem.Level2 + adjustedItem.Level3;
+                //console.log(`[Info] masteryExpTable[${item.Name}] = ${masteryExpTable[item.Name]}`);
+            }
+            else {
+                console.error(`[Info] No adjustment found for item: ${item.Name}`);
+            }
+        }
+        else {
+            masteryExpTable[item.Name] = item.Level2 + item.Level3;
+            //console.log(`[Info] masteryExpTable[${item.Name}] = ${masteryExpTable[item.Name]}`);
+        }
     }
     else {
         console.error(`[Info] Missing required fields for item: ${JSON.stringify(item)}`);
     }
 });
 console.info("[Info] Mastery table populated");
-Object.keys(config.masteryExpOverride).forEach((name) => {
-    if (masteryExpTable[name] !== undefined) {
-        masteryExpTable[name] = config.masteryExpOverride[name];
-        console.info("[Info] Exp for item " + name + " was overwritten.");
-    }
-});
 let saveFile = {};
 if (fs_1.default.existsSync(saveFilePath)) {
     try {
@@ -98,7 +122,16 @@ const modifiedData = weaponMastery.map((weapon) => {
     let timesCanPrestige = savedData.Mastering.find((item) => item.Id === Id)?.["Times Can Prestige"] || 0;
     let partialExpSavedUp = savedData.Mastering.find((item) => item.Id === Id)?.["Partial exp saved up"] || 0;
     let masteryLevelThreeExpThreshold = masteryExpTable[Id];
-    const expOverflow = Progress - masteryLevelThreeExpThreshold;
+    let offsetMasteryLevelThreeExpThreshold = weaponLevelsAdjusterConfig.prestigedWeaponsLvl2Exp + weaponLevelsAdjusterConfig.prestigedWeaponsLvl3Exp;
+    // expOverflow is how much exp we got above mastery lvl3, if we adjust it, use adjusted value, otherwise use vanilla value in masteryLevelThreeExpThreshold
+    let expOverflow;
+    if (timesPrestiged > 0 && weaponLevelsAdjusterConfig.overrideExpForPrestigedWeapons) {
+        expOverflow = Progress - offsetMasteryLevelThreeExpThreshold;
+    }
+    else {
+        expOverflow = Progress - masteryLevelThreeExpThreshold;
+    }
+    // prestigeThreshold is how much exp we have to gain to be able to prestige the weapon 
     let prestigeThreshold = 0;
     if (config.expIncreaseIsLinear) {
         prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * (1 + expIncrease * timesPrestiged));
@@ -106,7 +139,8 @@ const modifiedData = weaponMastery.map((weapon) => {
     else {
         prestigeThreshold = Math.floor(masteryLevelThreeExpThreshold * Math.pow(1 + expIncrease, timesCanPrestige));
     }
-    if (Progress > masteryLevelThreeExpThreshold) {
+    // store excess exp
+    if (Progress > masteryLevelThreeExpThreshold || (timesPrestiged > 0 && weaponLevelsAdjusterConfig.overrideExpForPrestigedWeapons && Progress > offsetMasteryLevelThreeExpThreshold)) {
         partialExpSavedUp += expOverflow;
         const index = saveFile.characters.pmc.Skills.Mastering.findIndex((item) => item.Id === Id);
         if (index !== -1) {
@@ -129,6 +163,9 @@ const modifiedData = weaponMastery.map((weapon) => {
     }
     else if (timesCanPrestige > timesPrestiged) {
         console.log(`[Prestige] You forgot to prestige ${Id} last time you were doing this!`);
+    }
+    if (timesPrestiged > 0 && weaponLevelsAdjusterConfig.overrideExpForPrestigedWeapons) {
+        masteryLevelThreeExpThreshold = offsetMasteryLevelThreeExpThreshold;
     }
     return {
         Id,
